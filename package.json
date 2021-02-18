@@ -1,0 +1,17 @@
+{
+  "name": "mooc_3",
+  "version": "1.0.0",
+  "description": "Programa de inicio de bases de datos con Sequelize y Sqlite3",
+  "main": "main.js",
+  "dependencies": {
+    "sequelize": "^6.5.0",
+    "sqlite3": "^5.0.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
