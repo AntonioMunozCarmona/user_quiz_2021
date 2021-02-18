@@ -1,4 +1,5 @@
 const user = require('./cmd_user');
+const quiz = require('./cmd_quiz');
 const readline = require('readline');
 
 const rl = readline.createInterface({
@@ -7,8 +8,8 @@ const rl = readline.createInterface({
     prompt: "> "
 });
 
-rl.log = (msg) => console.log(msg);
-rl.questionP = function (string) {
+rl.log = (msg) => console.log(msg);     // Aáde log a la interface rl
+rl.questionP = function (string) {      // Añáde questionP a la interface rl
     return new Promise( (resolve) => {
         this.question(` ${string}: `, (answer) => resolve(answer.trim()))
     })
@@ -25,6 +26,13 @@ rl.on('line', async (line) => {
         else if (['ru', 'ur', 'r'].includes(cmd)) { await user.read(rl)}
         else if (['uu'].includes(cmd)) {await user.update(rl)}
         else if (['du', 'ud'].includes(cmd)) { await user.delete(rl)}
+
+        else if (['lq', 'ql', 'q'].includes(cmd)) { await quiz.list(rl)}
+        else if (['cq', 'qc'].includes(cmd)) { await quiz.create(rl)}
+        else if ([`tq`, 'qt', 't'].includes(cmd)) { await quiz.test(rl)}
+        else if ([`uq`, 'qu', 'q'].includes(cmd)) { await quiz.update(rl)}
+        else if (['dq', 'qd'].includes(cmd)) { await quiz.delete(rl)}
+
         else if ('e' === cmd) {rl.log(`Hasta Pronto!!`); process.exit(0);}
         else { rl.log(`Comando no soportado `); user.help(rl)}
 

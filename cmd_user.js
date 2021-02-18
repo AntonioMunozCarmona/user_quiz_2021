@@ -1,4 +1,4 @@
-const User = require("./model").models.User;
+const {User, Quiz} = require("./model").models;
 
 exports.help = (rl) => rl.log(
     ` Comandos (parametros que son requeridos): 
@@ -10,6 +10,12 @@ exports.help = (rl) => rl.log(
     > uu            ## Actualizar usuario (user update)
     > du | ud       ## Borrar usuario (delete user)
     >
+    > lq | ql | q   ## Listar (todos) los quizes
+    > cq | qc       ## Crear quiz
+    > tq | qt | t   ## Test quiz => Play
+    > uq | qu       ## Actualizar quiz (quiz update)
+    > dq | qd       ## Borrar quiz (delete quiz)
+
     > e             ## Salir (Exit)`
 );
 
@@ -38,11 +44,19 @@ exports.read = async (rl) => {
     if (!name) throw new Error("La respuesta no puede estar vacía");
 
     let user = await User.findOne(
-        { where: {name} }
+        { 
+            where: {name},
+            include: [{ model: Quiz, as: 'posts' }]
+        }
     );
     if (!user) throw new Error(` ${name} no está en la base de datos..`);
 
     rl.log(` ${user.name} tiene ${user.age} años`);
+
+    rl.log(` Sus Quizes:`)
+    user.posts.forEach( 
+        (quiz) => rl.log(`     ${quiz.question} => ${quiz.answer} ${quiz.id}`)
+    );
 };
 
 exports.update = async (rl) => {
