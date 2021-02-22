@@ -15,6 +15,10 @@ exports.help = (rl) => rl.log(
     > tq | qt | t   ## Test quiz => Play
     > uq | qu       ## Actualizar quiz (quiz update)
     > dq | qd       ## Borrar quiz (delete quiz)
+    >
+    > lf | fl | f   ## Listar todos los favoritos
+    > cf | fc       ## Crear favorito
+    > df | fd       ## Borrar favorito (Delete favourite)
 
     > e             ## Salir (Exit)`
 );
@@ -46,7 +50,12 @@ exports.read = async (rl) => {
     let user = await User.findOne(
         { 
             where: {name},
-            include: [{ model: Quiz, as: 'posts' }]
+            include: [
+                { model: Quiz, as: 'posts' },
+                { model: Quiz, as: 'fav',
+                    include: [{model: User, as: 'author'}]
+                }
+            ]
         }
     );
     if (!user) throw new Error(` ${name} no está en la base de datos..`);
@@ -57,6 +66,11 @@ exports.read = async (rl) => {
     user.posts.forEach( 
         (quiz) => rl.log(`     ${quiz.question} => ${quiz.answer} ${quiz.id}`)
     );
+
+    rl.log(`\n    Sus quizzes favoritos: `)
+    user.fav.forEach( (quiz) => {
+        rl.log(`   ${quiz.question} --> ${quiz.answer} (${quiz.author.name}, ${quiz.id})`)
+    })
 };
 
 exports.update = async (rl) => {
