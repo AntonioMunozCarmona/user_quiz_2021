@@ -5,11 +5,17 @@
   "main": "main.js",
   "dependencies": {
     "sequelize": "^6.5.0",
+    "sequelize-cli": "^6.2.0",
     "sqlite3": "^5.0.2"
   },
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "migrate": "sequelize db:migrate --url sqlite://%cd%/db.sqlite",
+    "seed": "sequelize db:seed:all --url sqlite://%cd%/db.sqlite",
+    "migrate-unix": "sequelize db:migrate --url sqlite://$(pwd)/db.sqlite",
+    "seed-unix": "sequelize db:seed:all --url sqlite://$(pwd)/db.sqlite",
+    "start": "node main"
   },
   "keywords": [],
   "author": "",
